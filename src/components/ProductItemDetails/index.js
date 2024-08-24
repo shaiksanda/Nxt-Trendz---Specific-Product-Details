@@ -1,7 +1,7 @@
 // Write your code here
 import {Component} from 'react'
-import {BsPlusSquareFill} from 'react-icons/bs'
-import {FaMinusCircle} from 'react-icons/fa'
+import {BsDashSquare} from 'react-icons/bs'
+import {FaCartPlus} from 'react-icons/fa'
 import Cookies from 'js-cookie'
 import {withRouter} from 'react-router-dom'
 import Loader from 'react-loader-spinner'
@@ -17,9 +17,21 @@ class ProductItemDetails extends Component {
     this.getProductItemDetails()
   }
 
+  onIncrement = () => {
+    const {quantity} = this.state
+    this.setState({quantity: quantity + 1})
+  }
+
+  onDecrement = () => {
+    const {quantity} = this.state
+    if (quantity > 1) {
+      this.setState({quantity: quantity - 1})
+    }
+  }
+
   handleContinueClick = () => {
     const {history} = this.props
-    history.replace('/')
+    history.replace('/products')
   }
 
   renderLoaderView = () => (
@@ -32,7 +44,7 @@ class ProductItemDetails extends Component {
     <div className="failure-view">
       <img
         src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-error-view-img.png"
-        alt="error view"
+        alt="failure view"
         className="error-image"
       />
       <h1>Product Not Found</h1>
@@ -52,7 +64,11 @@ class ProductItemDetails extends Component {
       <div>
         <div className="product-item-details-container">
           <div style={{width: '100%'}}>
-            <img src={productData.imageUrl} alt="" className="product-image" />
+            <img
+              src={productData.imageUrl}
+              alt={`product ${productData.id}`}
+              className="product-image"
+            />
           </div>
           <div style={{width: '100%'}}>
             <h1>{productData.title}</h1>
@@ -75,9 +91,17 @@ class ProductItemDetails extends Component {
             <p>Brand: {productData.brand}</p>
             <hr />
             <div className="quantity">
-              <FaMinusCircle style={{marginRight: '35px', cursor: 'pointer'}} />
+              <BsDashSquare
+                onClick={this.onDecrement}
+                style={{marginRight: '35px', cursor: 'pointer'}}
+              />
+
               <p style={{marginRight: '35px'}}>{quantity}</p>
-              <BsPlusSquareFill style={{cursor: 'pointer'}} />
+
+              <FaCartPlus
+                onClick={this.onIncrement}
+                style={{cursor: 'pointer'}}
+              />
             </div>
             <button className="add-to-cart-button" type="button">
               ADD TO CART
@@ -120,6 +144,7 @@ class ProductItemDetails extends Component {
         rating: data.rating,
         style: data.style,
         title: data.title,
+        id: data.id,
         totalReviews: data.total_reviews,
         similarProducts: data.similar_products,
       }

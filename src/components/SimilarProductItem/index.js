@@ -7,10 +7,15 @@ const SimilarProductItem = props => {
     brand: data.brand,
     price: data.price,
     rating: data.rating,
+    id: data.id,
   }
   return (
     <li className="product-item-similar">
-      <img src={updatedData.imageUrl} alt="product" className="thumbnail" />
+      <img
+        src={updatedData.imageUrl}
+        alt={`similar product ${updatedData.id}`}
+        className="thumbnail"
+      />
       <h1 className="title">{updatedData.title}</h1>
       <p className="brand">by {updatedData.brand}</p>
       <div className="product-details">
